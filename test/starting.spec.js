@@ -7,6 +7,7 @@ describe('Basic Mocha Test', function() {
         var objB = {name:'cheeyim', gender:'female'};
 
         //note: should is available here as it's using should from obj prototype
+        //test objects
         obj.should.deep.equal(objB);
     });
 
@@ -14,6 +15,6 @@ describe('Basic Mocha Test', function() {
         var iAmNull = null;
 
         //this uses should function from chai
-        should.not.exists(iAmNull);
+        should.not.exist(iAmNull);
     });
 });

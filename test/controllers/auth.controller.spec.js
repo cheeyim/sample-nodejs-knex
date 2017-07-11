@@ -2,6 +2,10 @@ var assert = require('assert');
 var authController = require('../../controllers/auth.controller');
 var expect = require('chai').expect;
 var should = require('chai').should();
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+chai.should();
 
 describe('AuthController', function () {
     //sample hooks - give name to hooks for easier troubleshooting
@@ -35,6 +39,13 @@ describe('AuthController', function () {
                     assert.equal(false, isAuth);
                     done();
                 });
+        })
+    })
+
+    //test promise
+    describe('isAuthorizedPromise', function () {
+        it('should return false if not authorized', function () {
+            return authController.isAuthorizedPromise('admin').should.eventually.be.false;
         })
     })
 });
