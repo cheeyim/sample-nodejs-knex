@@ -1,5 +1,7 @@
 var assert = require('assert');
 var authController = require('../../controllers/auth.controller');
+var expect = require('chai').expect;
+var should = require('chai').should();
 
 describe('AuthController', function () {
     //sample hooks - give name to hooks for easier troubleshooting
@@ -11,11 +13,14 @@ describe('AuthController', function () {
     //hint: add describe.skip if you want mocha to skip failing tests
     describe('isAuthorized', function () {
         it('should return false if not authorized', function () {
-            assert.equal(false, authController.isAuthorized('admin'));
+            var isAuth = authController.isAuthorized('admin');
+            //sample using chai - expect
+            expect(isAuth).to.be.false;
         })
         it('should return true if authorized', function () {
             authController.setRoles(['user', 'admin']);
-            assert.equal(true, authController.isAuthorized('admin'));
+            var isAuth = authController.isAuthorized('admin');
+            isAuth.should.be.true;
         })
         //sample pending tests
         it('should not allow a get if not authorized');
