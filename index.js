@@ -4,6 +4,10 @@ const bodyParser = require('body-parser')
 const store = require('./store')
 const app = express()
 
+const config = {
+  appRoot: __dirname // required config
+};
+
 app.use(bodyParser.json())
 
 app.post('/createUser', (req, res) => {
