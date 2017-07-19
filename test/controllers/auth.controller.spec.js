@@ -1,5 +1,5 @@
 var assert = require('assert');
-var authController = require('../../controllers/auth.controller');
+var authController = require('../../api/controllers/auth.controller');
 var expect = require('chai').expect;
 var should = require('chai').should();
 var chai = require('chai');
@@ -7,6 +7,10 @@ var chaiAsPromised = require('chai-as-promised');
 var sinon = require('sinon');
 chai.use(chaiAsPromised);
 chai.should();
+
+//spies - fake methods
+//stubs - fake methods with pre-programmed behaviours
+//mocks - fake methods with pre-programmed behaviours + expectations
 
 describe('AuthController', function () {
     //sample hooks - give name to hooks for easier troubleshooting
@@ -67,16 +71,37 @@ describe('AuthController', function () {
 
     //test using sinon spy function
     describe('getIndex', function() {
-        it('should return index', function() {
-            var req = {};
+        var user = {};
+        beforeEach(function() {
+            user = {
+                roles: ['user'],
+                isAuthorized : function (neededRole) {
+                    return this.roles.indexOf(neededRole) >= 0;
+                }
+            }
+        });
+
+        it('should return index if authorized', function() {
+
+            //sample sinon stub - use to test return function and exception thrown
+            //var isAuth = sinon.stub(user, 'isAuthorized').returns(true);
+            var isAuth = sinon.stub(user, 'isAuthorized').returns(true);
+            var req = { user: user };
             var res = {
-                render: sinon.spy()
+                //render: sinon.spy()
+                render : function() {}
             };
 
+            var mock = sinon.mock(res);
+            mock.expects('render').once().withExactArgs('index');
+
             authController.getIndex(req, res);
+            isAuth.calledOnce.should.be.true;
             //hint:you may use console.log(res.render) to view the full stack of the fake function
-            res.render.calledOnce.should.be.true;
-            res.render.firstCall.args[0].should.equal('index');
+            // res.render.calledOnce.should.be.true;
+            // res.render.firstCall.args[0].should.equal('error');
+
+            mock.verify();
         })
     })
 });
